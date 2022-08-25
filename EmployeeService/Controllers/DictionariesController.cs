@@ -1,0 +1,50 @@
+﻿using EmployeeService.Data;
+using EmployeeService.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EmployeeService.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DictionariesController : ControllerBase
+    {
+        private readonly IEmployeeTypeRepository _employeeTypeRepository;
+
+        public DictionariesController(IEmployeeTypeRepository employeeTypeRepository)
+        {
+            _employeeTypeRepository = employeeTypeRepository;
+        }
+
+        [HttpGet("employee-types/all")]
+        public IActionResult GetAllEmployeeTypes()
+        {
+            return Ok(_employeeTypeRepository.GetAll());
+        }
+
+      
+        [HttpGet("employee-types/get/{id}")]
+        public IActionResult GetUser(int id)
+        {
+            return Ok(_employeeTypeRepository.GetById(id));
+        }
+        [HttpPost("employee-types/add")]
+        public IActionResult GetUser(EmployeeType employee)
+        {
+            return Ok(_employeeTypeRepository.Create(employee));
+        }
+        [HttpPut("employee-types/update")]
+        public async Task<IActionResult> Update(EmployeeType employee)
+        {
+            await _employeeTypeRepository.Update(employee);//лучше сразу async методы use UpdateAsync
+            return Ok(200);
+        }
+        [HttpDelete("employee-types/remove/{id}")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            await _employeeTypeRepository.Delete(id);//лучше сразу async методы use DeleteAsync
+            return Ok(200);
+        }
+
+    }
+}
