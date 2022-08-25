@@ -12,19 +12,22 @@ namespace EmployeeService.Controllers
     public class EmployeeController : ControllerBase
     {
         #region Services
-
+        ILogger<DictionariesController> _logger;
         private readonly IEmployeeRepository _employeeRepository;
+        ILogger<EmployeeController> logger;
 
         #endregion
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, ILogger<DictionariesController> logger)
         {
             _employeeRepository = employeeRepository;
+            _logger = logger;
         }
 
         [HttpPost("create")]
         public IActionResult Create([FromBody] CreateEmployeeRequest request)
         {
+            _logger.LogInformation($"Create Employee{request.Surname}");
             return Ok(_employeeRepository.Create(new Employee
             {
                 DepartmentId = request.DepartmentId,
@@ -39,6 +42,7 @@ namespace EmployeeService.Controllers
         [HttpGet("get/all")]
         public ActionResult<List<EmployeeDto>> GetAllEmployees()
         {
+            _logger.LogInformation($"GetAllEmployees ");
             var emp =_employeeRepository.GetAll();
             return Ok(emp.Select(employee => new EmployeeDto
             {
@@ -56,6 +60,7 @@ namespace EmployeeService.Controllers
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            _logger.LogInformation($"GetById Employee{id}");
             var employee =await _employeeRepository.GetById(id);
             return  Ok(new EmployeeDto
             {

@@ -41,7 +41,7 @@ namespace EmployeeService.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAllDepartments()
         {
-            //_logger.LogInformation("Department added.");
+            _logger.LogInformation("Department all.");
             return Ok(_departmentRepository.GetAll().Select(dep => new DepartmentDto
             {
                 Id = dep.Id,
@@ -54,6 +54,7 @@ namespace EmployeeService.Controllers
         [HttpGet("departmens/get/{id}")]
         public async Task<IActionResult> GetDepartmen(Guid id)
         {
+            _logger.LogInformation($"GetDepartmen {id}");
             var dep = await _departmentRepository.GetById(id);
             return Ok(new DepartmentDto()
             {
@@ -62,20 +63,23 @@ namespace EmployeeService.Controllers
             });
 
         }
-        [HttpPost("departmens/add")]
+        [HttpPost("departmens/create")]
         public IActionResult GetUser(Department employee)
         {
+            _logger.LogInformation($"create {employee.Description}");
             return Ok(_departmentRepository.Create(employee));
         }
         [HttpPut("departmens/update")]
         public async Task<IActionResult> Update(Department employee)
         {
+            _logger.LogInformation($"Update {employee.Description}");
             await _departmentRepository.Update(employee);//лучше сразу async методы use UpdateAsync
             return Ok(200);
         }
         [HttpDelete("departmens/remove/{id}")]
         public async Task<IActionResult> Remove(Guid id)
         {
+            _logger.LogInformation($"Remove {id}");
             await _departmentRepository.Delete(id);//лучше сразу async методы use DeleteAsync
             return Ok(200);
         }

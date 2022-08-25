@@ -9,16 +9,19 @@ namespace EmployeeService.Controllers
     [ApiController]
     public class DictionariesController : ControllerBase
     {
+        ILogger<DictionariesController> _logger;
         private readonly IEmployeeTypeRepository _employeeTypeRepository;
 
-        public DictionariesController(IEmployeeTypeRepository employeeTypeRepository)
+        public DictionariesController(IEmployeeTypeRepository employeeTypeRepository,ILogger<DictionariesController> logger)
         {
             _employeeTypeRepository = employeeTypeRepository;
+            _logger = logger;
         }
 
         [HttpGet("employee-types/all")]
         public IActionResult GetAllEmployeeTypes()
         {
+            _logger.LogInformation($"all employee");
             return Ok(_employeeTypeRepository.GetAll());
         }
 
@@ -26,22 +29,26 @@ namespace EmployeeService.Controllers
         [HttpGet("employee-types/get/{id}")]
         public IActionResult GetUser(int id)
         {
+            _logger.LogInformation($"Get Dictionaries{id}");
             return Ok(_employeeTypeRepository.GetById(id));
         }
         [HttpPost("employee-types/add")]
-        public IActionResult GetUser(EmployeeType employee)
+        public IActionResult Create(EmployeeType employee)
         {
+            _logger.LogInformation($"Create Dictionaries {employee.Description}");
             return Ok(_employeeTypeRepository.Create(employee));
         }
         [HttpPut("employee-types/update")]
         public async Task<IActionResult> Update(EmployeeType employee)
         {
+            _logger.LogInformation($"update Dictionaries{employee.Id}");
             await _employeeTypeRepository.Update(employee);//лучше сразу async методы use UpdateAsync
             return Ok(200);
         }
         [HttpDelete("employee-types/remove/{id}")]
         public async Task<IActionResult> Remove(int id)
         {
+            _logger.LogInformation($"remove Dictionaries {id}");
             await _employeeTypeRepository.Delete(id);//лучше сразу async методы use DeleteAsync
             return Ok(200);
         }
