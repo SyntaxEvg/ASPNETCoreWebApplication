@@ -1,5 +1,6 @@
 ﻿using ASPNETCoreWebApplication.Model;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 using System.Net.Http.Json;
 using System.Text;
 
@@ -17,7 +18,7 @@ public class MyHttpClient
     {
         var client = _httpFactory.CreateClient(nameConnect);
         //id = 4 по id = 13.
-        List<ResponseBlog> responseBlog = new List<ResponseBlog>();
+        ConcurrentBag<ResponseBlog> responseBlog = new ConcurrentBag<ResponseBlog>();
         List<Task> tasks = new List<Task>();
         for (int id = 4; id < 14; id++)
         {
