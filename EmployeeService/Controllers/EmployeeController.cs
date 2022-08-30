@@ -12,13 +12,12 @@ namespace EmployeeService.Controllers
     public class EmployeeController : ControllerBase
     {
         #region Services
-        ILogger<DictionariesController> _logger;
+        ILogger<EmployeeController> _logger;
         private readonly IEmployeeRepository _employeeRepository;
-        ILogger<EmployeeController> logger;
 
         #endregion
 
-        public EmployeeController(IEmployeeRepository employeeRepository, ILogger<DictionariesController> logger)
+        public EmployeeController(IEmployeeRepository employeeRepository, ILogger<EmployeeController> logger)
         {
             _employeeRepository = employeeRepository;
             _logger = logger;

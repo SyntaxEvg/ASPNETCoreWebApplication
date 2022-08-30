@@ -10,22 +10,24 @@ namespace EmployeeService.Services.Impl
             throw new NotImplementedException();
         }
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IList<EmployeeType> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public EmployeeType GetById(int id)
+
+
+        Task IRepository<EmployeeType, int>.Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(EmployeeType data)
+        Task<EmployeeType> IRepository<EmployeeType, int>.GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IRepository<EmployeeType, int>.Update(EmployeeType data)
         {
             throw new NotImplementedException();
         }

@@ -7,13 +7,8 @@ namespace EmployeeService.Services.Impl
     {
         public int Create(Employee data)
         {
-            return 1;
-           // throw new NotImplementedException();
-        }
-
-        public void Delete(int id)
-        {
-          //  throw new NotImplementedException();
+            return 0;
+            throw new NotImplementedException();
         }
 
         public IList<Employee> GetAll()
@@ -21,16 +16,20 @@ namespace EmployeeService.Services.Impl
             return new List<Employee>();
           //  throw new NotImplementedException();
         }
-
-        public Employee GetById(int id)
+      
+        Task IRepository<Employee, int>.Delete(int id)
         {
-            return new Employee();
-            //  throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void Update(Employee data)
+        Task<Employee> IRepository<Employee, int>.GetById(int id)
         {
-          //  throw new NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        Task IRepository<Employee, int>.Update(Employee data)
+        {
+            throw new NotImplementedException();
         }
     }
 }
