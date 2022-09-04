@@ -27,10 +27,6 @@ namespace EmployeeService.Services.Impl
             _serviceScopeFactory = serviceScopeFactory;
         }
 
-        public SessionDto GetSession(string sessionToken)
-        {
-            throw new NotImplementedException();
-        }
 
 
         public AuthenticationResponse Login(AuthenticationRequest authenticationRequest)
@@ -38,7 +34,9 @@ namespace EmployeeService.Services.Impl
             using IServiceScope scope = _serviceScopeFactory.CreateScope();
             EmployeeServiceDbContext context = scope.ServiceProvider.GetRequiredService<EmployeeServiceDbContext>();
 
-            Account account =!string.IsNullOrWhiteSpace(authenticationRequest.Login) ? FindAccountByLogin(context, authenticationRequest.Login) : null;
+            Account account =
+               !string.IsNullOrWhiteSpace(authenticationRequest.Login) ?
+               FindAccountByLogin(context, authenticationRequest.Login) : null;
 
             if (account == null)
             {
@@ -80,6 +78,83 @@ namespace EmployeeService.Services.Impl
                 Status = AuthenticationStatus.Success,
                 Session = sessionDto
             };
+        }
+
+        public AuthenticationResponse Registration(AccountDTOREG authenticationRequest)
+        {
+            try
+            {
+                using IServiceScope scope = _serviceScopeFactory.CreateScope();
+                EmployeeServiceDbContext context = scope.ServiceProvider.GetRequiredService<EmployeeServiceDbContext>();
+
+                (string salt, string hash) = PasswordUtils.CreatePasswordHash(authenticationRequest.Password);
+                var accountreg = new Account();
+                accountreg.EMail = authenticationRequest.EMail;
+                accountreg.PasswordHash = hash;
+                accountreg.PasswordSalt = salt;
+                accountreg.Locked = false;
+                accountreg.FirstName = authenticationRequest.FirstName;
+                accountreg.LastName = authenticationRequest.LastName;
+                accountreg.SecondName = authenticationRequest.SecondName;
+                context.Accounts.Add(accountreg);
+                context.SaveChanges();
+                return new AuthenticationResponse
+                {
+                    Status = AuthenticationStatus.Success,
+                };
+            }
+            catch (Exception)
+            {
+
+                return new AuthenticationResponse
+                {
+                    Status = AuthenticationStatus.UserNotFound
+                };
+            }
+        }
+           
+        
+
+
+
+        public SessionDto GetSession(string sessionToken)
+        {
+            SessionDto sessionDto;
+
+            lock (_sessions)
+            {
+                _sessions.TryGetValue(sessionToken, out sessionDto);
+            }
+
+            if (sessionDto == null)
+            {
+                using IServiceScope scope = _serviceScopeFactory.CreateScope();
+                EmployeeServiceDbContext context = scope.ServiceProvider.GetRequiredService<EmployeeServiceDbContext>();
+
+                AccountSession session = context
+                    .AccountSessions
+                    .FirstOrDefault(item => item.SessionToken == sessionToken);
+
+                if (session == null)
+                    return null;
+
+
+                Account account = context.Accounts.FirstOrDefault(item => item.AccountId == session.AccountId);
+
+                sessionDto = GetSessionDto(account, session);
+
+                if (sessionDto != null)
+                {
+                    lock (_sessions)
+                    {
+                        _sessions[sessionToken] = sessionDto;
+                    }
+                }
+
+            }
+
+            return sessionDto;
+
         }
 
 

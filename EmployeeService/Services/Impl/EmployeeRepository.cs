@@ -5,29 +5,27 @@ namespace EmployeeService.Services.Impl
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public int Create(Employee data)
-        {
-            return 0;
-            throw new NotImplementedException();
-        }
-
-        public IList<Employee> GetAll()
-        {
-            return new List<Employee>();
-          //  throw new NotImplementedException();
-        }
-      
-        Task IRepository<Employee, int>.Delete(int id)
+        public Task<Guid> Create(Employee data)
         {
             throw new NotImplementedException();
         }
 
-        Task<Employee> IRepository<Employee, int>.GetById(int id)
+        public Task<bool> Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        Task IRepository<Employee, int>.Update(Employee data)
+        public Task<IList<Employee>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Employee> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> Update(Employee data)
         {
             throw new NotImplementedException();
         }

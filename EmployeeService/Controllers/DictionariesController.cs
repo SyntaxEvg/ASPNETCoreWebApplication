@@ -1,10 +1,12 @@
 ﻿using EmployeeService.Data;
 using EmployeeService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DictionariesController : ControllerBase
@@ -27,7 +29,7 @@ namespace EmployeeService.Controllers
 
       
         [HttpGet("employee-types/get/{id}")]
-        public IActionResult GetUser(int id)
+        public IActionResult GetUser(Guid id)
         {
             _logger.LogInformation($"Get Dictionaries{id}");
             return Ok(_employeeTypeRepository.GetById(id));
@@ -46,7 +48,7 @@ namespace EmployeeService.Controllers
             return Ok(200);
         }
         [HttpDelete("employee-types/remove/{id}")]
-        public async Task<IActionResult> Remove(int id)
+        public async Task<IActionResult> Remove(Guid id)
         {
             _logger.LogInformation($"remove Dictionaries {id}");
             await _employeeTypeRepository.Delete(id);//лучше сразу async методы use DeleteAsync

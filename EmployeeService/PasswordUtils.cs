@@ -42,5 +42,10 @@ namespace EmployeeService
             // done
             return Convert.ToBase64String(passwordHash);
         }
+
+        internal static void genHashAndSalt(string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

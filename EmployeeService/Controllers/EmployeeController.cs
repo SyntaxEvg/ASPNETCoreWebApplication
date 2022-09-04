@@ -2,11 +2,13 @@
 using EmployeeService.Models;
 using EmployeeService.Models.Requests;
 using EmployeeService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -39,10 +41,14 @@ namespace EmployeeService.Controllers
         }
 
         [HttpGet("get/all")]
-        public ActionResult<List<EmployeeDto>> GetAllEmployees()
+        public async Task<ActionResult<List<EmployeeDto>>> GetAllEmployees()
         {
             _logger.LogInformation($"GetAllEmployees ");
-            var emp =_employeeRepository.GetAll();
+            var emp =await _employeeRepository.GetAll();
+            if (emp == null)
+            {
+                return NotFound(null);
+            }
             return Ok(emp.Select(employee => new EmployeeDto
             {
                 Id = employee.Id,
