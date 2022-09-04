@@ -1,3 +1,3 @@
 # ASPNETCoreWebApplication
 ASPNETCore Web Application
-#### Урок 5. Аутентификация и авторизация
+#### Урок 6. Валидация в веб-приложении
