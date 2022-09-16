@@ -14,5 +14,11 @@ namespace EmployeeService.Data
 
         [InverseProperty(nameof(Employee.EmployeeType))]
         public virtual ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
+        public string FirstName { get; set; }
+        public string DepartmentId { get; set; }
+        public string EmployeeTypeId { get; set; }
+        public string Salary { get; set; }
+        public string Patronymic { get; set; }
+        public string Surname { get; set; }
     }
 }
